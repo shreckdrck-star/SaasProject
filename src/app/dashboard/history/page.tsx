@@ -1,7 +1,80 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Calendar } from "lucide-react";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FileText, Calendar, Inbox, ChevronDown, ChevronUp, AlertCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { CONTENT_TYPE_LABELS } from "@/lib/constants";
+import { timeAgo } from "@/lib/utils";
+
+type Generation = {
+  id: string;
+  content_type: string;
+  topic: string;
+  generated_content: string;
+  created_at: string;
+};
 
 export default function HistoryPage() {
+  const [generations, setGenerations] = useState<Generation[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchHistory() {
+      try {
+        const res = await fetch("/api/generations");
+        if (!res.ok) throw new Error("Failed to fetch history");
+        const data = await res.json();
+        setGenerations(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHistory();
+  }, []);
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
+  if (loading) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Generation History</h1>
+          <p className="text-gray-500 mt-2">View all your past content generations.</p>
+        </div>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Generation History</h1>
+          <p className="text-gray-500 mt-2">View all your past content generations.</p>
+        </div>
+        <Card>
+          <CardContent className="p-12 flex flex-col items-center justify-center text-center">
+            <AlertCircle className="w-12 h-12 text-red-400 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">Failed to load history</h3>
+            <p className="text-gray-500 mb-4">{error}</p>
+            <Button variant="outline" onClick={() => window.location.reload()}>Try Again</Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div>
@@ -9,29 +82,66 @@ export default function HistoryPage() {
         <p className="text-gray-500 mt-2">View all your past content generations.</p>
       </div>
 
-      <div className="grid gap-4">
-        {[1, 2, 3, 4, 5].map((item) => (
-          <Card key={item}>
-            <CardContent className="p-6 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="p-3 bg-purple-100 rounded-lg text-purple-600">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">Content Title #{item}</h3>
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
-                    <span className="bg-gray-100 px-2 py-0.5 rounded text-xs">Instagram</span>
-                    <span className="flex items-center"><Calendar className="w-3 h-3 mr-1" /> 2 days ago</span>
+      {!generations || generations.length === 0 ? (
+        <Card>
+          <CardContent className="p-12 flex flex-col items-center justify-center text-center">
+            <Inbox className="w-12 h-12 text-gray-300 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">No generations yet</h3>
+            <p className="text-gray-500 mb-4">Create your first piece of content to see it here.</p>
+            <Link href="/dashboard/generate">
+              <Button variant="gradient">Generate Content</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {generations.map((item) => (
+            <Card key={item.id}>
+              <CardContent className="p-0">
+                <button
+                  onClick={() => toggleExpand(item.id)}
+                  className="w-full p-6 flex items-center justify-between text-left hover:bg-gray-50 transition rounded-lg"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-purple-100 rounded-lg text-purple-600">
+                      <FileText className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{item.topic}</h3>
+                      <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
+                        <span className="bg-gray-100 px-2 py-0.5 rounded text-xs">
+                          {CONTENT_TYPE_LABELS[item.content_type] || item.content_type}
+                        </span>
+                        <span className="flex items-center">
+                          <Calendar className="w-3 h-3 mr-1" />
+                          {timeAgo(item.created_at)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="text-sm text-gray-500 max-w-md hidden md:block truncate">
-                This is a preview of the generated content that starts here...
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-400 max-w-xs hidden md:block truncate">
+                      {item.generated_content.slice(0, 80)}...
+                    </span>
+                    {expandedId === item.id ? (
+                      <ChevronUp className="w-5 h-5 text-gray-400" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                    )}
+                  </div>
+                </button>
+                {expandedId === item.id && (
+                  <div className="px-6 pb-6 border-t border-gray-100">
+                    <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                      {item.generated_content}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

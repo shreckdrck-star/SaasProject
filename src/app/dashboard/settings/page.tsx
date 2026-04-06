@@ -1,8 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { currentUser } from "@clerk/nextjs/server";
+import { DAILY_GENERATION_LIMIT } from "@/lib/constants";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const user = await currentUser();
+  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "";
+  const email = user?.emailAddresses?.[0]?.emailAddress || "";
+
   return (
     <div className="space-y-8 max-w-4xl">
       <div>
@@ -13,20 +19,20 @@ export default function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>Profile Information</CardTitle>
-          <CardDescription>Update your personal details.</CardDescription>
+          <CardDescription>Your profile is managed through Clerk authentication.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">Full Name</label>
-              <Input defaultValue="John Doe" />
+              <Input defaultValue={fullName} disabled />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Email</label>
-              <Input defaultValue="john@example.com" />
+              <Input defaultValue={email} disabled />
             </div>
           </div>
-          <Button>Save Changes</Button>
+          <p className="text-xs text-gray-500">To update your profile, use the avatar menu in the sidebar.</p>
         </CardContent>
       </Card>
 
@@ -39,7 +45,7 @@ export default function SettingsPage() {
           <div className="bg-purple-50 p-4 rounded-lg border border-purple-100 flex justify-between items-center">
             <div>
               <p className="font-semibold text-purple-900">Free Plan</p>
-              <p className="text-sm text-purple-700">3 generations per day</p>
+              <p className="text-sm text-purple-700">{DAILY_GENERATION_LIMIT} generations per day</p>
             </div>
             <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-100">Upgrade Plan</Button>
           </div>

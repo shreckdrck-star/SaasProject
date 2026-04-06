@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Copy, Check, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { DAILY_GENERATION_LIMIT } from "@/lib/constants";
 
 export default function GeneratePage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +42,11 @@ export default function GeneratePage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate content. Please check your API key and try again.");
+        if (response.status === 429) {
+          const body = await response.json();
+          throw new Error(`Daily limit reached (${body.used ?? "?"}/${body.limit ?? DAILY_GENERATION_LIMIT}). Try again tomorrow.`);
+        }
+        throw new Error("Failed to generate content. Please try again.");
       }
 
       const reader = response.body?.getReader();
@@ -54,19 +59,25 @@ export default function GeneratePage() {
         const text = decoder.decode(value, { stream: true });
         setGeneratedContent(prev => prev + text);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(generatedContent);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(generatedContent);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setError("Failed to copy to clipboard. Please select and copy manually.");
+    }
   };
+
+  const isFormValid = formData.topic.trim() !== "" && formData.targetAudience.trim() !== "";
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -152,7 +163,7 @@ export default function GeneratePage() {
                 </div>
               )}
 
-              <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700" disabled={isLoading || !isFormValid}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -181,16 +192,16 @@ export default function GeneratePage() {
               <div className="p-4 bg-gray-50 rounded-lg h-full min-h-[300px] text-sm leading-relaxed overflow-auto">
                 <ReactMarkdown
                   components={{
-                    h1: ({node, ...props}) => <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-4" {...props} />,
-                    h2: ({node, ...props}) => <h2 className="text-xl font-semibold text-gray-800 mt-5 mb-3" {...props} />,
-                    h3: ({node, ...props}) => <h3 className="text-lg font-medium text-gray-800 mt-4 mb-2" {...props} />,
-                    strong: ({node, ...props}) => <strong className="font-bold text-gray-900" {...props} />,
-                    ul: ({node, ...props}) => <ul className="list-disc pl-5 my-3 space-y-1 text-gray-700" {...props} />,
-                    ol: ({node, ...props}) => <ol className="list-decimal pl-5 my-3 space-y-1 text-gray-700" {...props} />,
-                    li: ({node, ...props}) => <li className="pl-1" {...props} />,
-                    p: ({node, ...props}) => <p className="mb-4 text-gray-700 last:mb-0" {...props} />,
-                    blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-purple-500 pl-4 italic my-4 text-gray-600" {...props} />,
-                    code: ({node, ...props}) => <code className="bg-gray-200 rounded px-1 py-0.5 text-xs font-mono text-gray-800" {...props} />,
+                    h1: (props) => <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-4" {...props} />,
+                    h2: (props) => <h2 className="text-xl font-semibold text-gray-800 mt-5 mb-3" {...props} />,
+                    h3: (props) => <h3 className="text-lg font-medium text-gray-800 mt-4 mb-2" {...props} />,
+                    strong: (props) => <strong className="font-bold text-gray-900" {...props} />,
+                    ul: (props) => <ul className="list-disc pl-5 my-3 space-y-1 text-gray-700" {...props} />,
+                    ol: (props) => <ol className="list-decimal pl-5 my-3 space-y-1 text-gray-700" {...props} />,
+                    li: (props) => <li className="pl-1" {...props} />,
+                    p: (props) => <p className="mb-4 text-gray-700 last:mb-0" {...props} />,
+                    blockquote: (props) => <blockquote className="border-l-4 border-purple-500 pl-4 italic my-4 text-gray-600" {...props} />,
+                    code: (props) => <code className="bg-gray-200 rounded px-1 py-0.5 text-xs font-mono text-gray-800" {...props} />,
                   }}
                 >
                   {generatedContent}

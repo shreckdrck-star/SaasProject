@@ -1,13 +1,12 @@
 import Link from "next/link";
-import { 
-  LayoutDashboard, 
-  PenTool, 
-  History, 
-  Settings, 
-  LogOut, 
-  User 
+import {
+  LayoutDashboard,
+  PenTool,
+  History,
+  Settings,
 } from "lucide-react";
 import { UserButton, SignedIn } from "@clerk/nextjs";
+import MobileNav from "@/components/mobile-nav";
 
 export default function DashboardLayout({
   children,
@@ -75,10 +74,7 @@ export default function DashboardLayout({
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
-        <header className="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center md:hidden">
-          <div className="font-bold text-xl text-purple-900">ContentAI</div>
-          {/* Mobile menu button would go here */}
-        </header>
+        <MobileNav />
         <div className="p-8">
           {children}
         </div>

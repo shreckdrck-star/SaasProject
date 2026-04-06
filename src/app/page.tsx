@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, Zap, Globe, MessageSquare } from "lucide-react";
 import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { DAILY_GENERATION_LIMIT } from "@/lib/constants";
 
 export default function Home() {
   return (
@@ -64,22 +65,25 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
+              id: "instagram",
               icon: <MessageSquare className="w-8 h-8 text-purple-400" />,
               title: "Instagram Posts",
               description: "Generate viral captions and hashtags tailored to your brand voice."
             },
             {
+              id: "website",
               icon: <Globe className="w-8 h-8 text-pink-400" />,
               title: "Website Copy",
               description: "Create landing page copy that converts visitors into customers."
             },
             {
+              id: "ads",
               icon: <Zap className="w-8 h-8 text-blue-400" />,
               title: "Ad Campaigns",
               description: "Write high-converting Facebook and Google ad copy in seconds."
             }
-          ].map((feature, index) => (
-            <div key={index} className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/50 transition backdrop-blur-sm">
+          ].map((feature) => (
+            <div key={feature.id} className="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-500/50 transition backdrop-blur-sm">
               <div className="mb-4 p-3 bg-white/5 rounded-lg inline-block">
                 {feature.icon}
               </div>
@@ -101,11 +105,11 @@ export default function Home() {
             <h3 className="text-xl font-semibold mb-2">Free</h3>
             <div className="text-3xl font-bold mb-6">$0<span className="text-lg text-gray-400 font-normal">/mo</span></div>
             <ul className="space-y-4 mb-8 text-gray-300">
-              <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> 3 generations/day</li>
+              <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> {DAILY_GENERATION_LIMIT} generations/day</li>
               <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> Basic templates</li>
               <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> Standard support</li>
             </ul>
-            <Link href="/auth/register" className="block w-full py-3 rounded-lg border border-white/20 text-center hover:bg-white/5 transition">
+            <Link href="/dashboard" className="block w-full py-3 rounded-lg border border-white/20 text-center hover:bg-white/5 transition">
               Get Started
             </Link>
           </div>
@@ -120,7 +124,7 @@ export default function Home() {
               <li className="flex items-center"><Check className="w-5 h-5 text-purple-400 mr-3" /> Advanced templates</li>
               <li className="flex items-center"><Check className="w-5 h-5 text-purple-400 mr-3" /> Priority support</li>
             </ul>
-            <Link href="/auth/register?plan=pro" className="block w-full py-3 rounded-lg bg-purple-600 text-center hover:bg-purple-700 transition">
+            <Link href="/dashboard" className="block w-full py-3 rounded-lg bg-purple-600 text-center hover:bg-purple-700 transition">
               Upgrade to Pro
             </Link>
           </div>
@@ -134,7 +138,7 @@ export default function Home() {
               <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> Team collaboration</li>
               <li className="flex items-center"><Check className="w-5 h-5 text-green-400 mr-3" /> API access</li>
             </ul>
-            <Link href="/auth/register?plan=business" className="block w-full py-3 rounded-lg border border-white/20 text-center hover:bg-white/5 transition">
+            <Link href="/dashboard" className="block w-full py-3 rounded-lg border border-white/20 text-center hover:bg-white/5 transition">
               Contact Sales
             </Link>
           </div>
@@ -143,7 +147,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="container mx-auto px-6 py-10 border-t border-white/10 text-center text-gray-400">
-        <p>&copy; 2024 ContentAI. All rights reserved.</p>
+        <p>&copy; 2025 ContentAI. All rights reserved.</p>
       </footer>
     </div>
   );
