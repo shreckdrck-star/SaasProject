@@ -54,20 +54,20 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Welcome back, {firstName}!</h1>
-          <p className="text-gray-500 mt-2">Here&apos;s what&apos;s happening with your content today.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Welcome back, {firstName}!</h1>
+          <p className="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Here&apos;s what&apos;s happening with your content today.</p>
         </div>
-        <Link href="/dashboard/generate">
-          <Button variant="gradient" size="lg">
+        <Link href="/dashboard/generate" className="w-full sm:w-auto">
+          <Button variant="gradient" size="lg" className="w-full sm:w-auto min-h-[44px]">
             Create New Content <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </Link>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Daily Usage</CardTitle>
@@ -114,21 +114,21 @@ export default async function DashboardPage() {
                 {recent.map((item) => {
                   const label = CONTENT_TYPE_LABELS[item.content_type] || item.content_type;
                   return (
-                    <div key={item.id} className="flex items-center justify-between p-4 hover:bg-gray-50 transition">
-                      <div className="flex items-center space-x-4">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    <div key={item.id} className="flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50 transition gap-3">
+                      <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                        <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center ${
                           item.content_type === "instagram" ? "bg-purple-100 text-purple-600" :
                           item.content_type === "website" ? "bg-pink-100 text-pink-600" : "bg-blue-100 text-blue-600"
                         }`}>
                           <FileText className="w-5 h-5" />
                         </div>
-                        <div>
-                          <p className="font-medium text-gray-900">{item.topic}</p>
-                          <p className="text-sm text-gray-500">{label} &bull; {timeAgo(item.created_at)}</p>
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-900 truncate">{item.topic}</p>
+                          <p className="text-sm text-gray-500 truncate">{label} &bull; {timeAgo(item.created_at)}</p>
                         </div>
                       </div>
-                      <Link href="/dashboard/history">
-                        <Button variant="ghost" size="sm">View</Button>
+                      <Link href="/dashboard/history" className="shrink-0">
+                        <Button variant="ghost" size="sm" className="min-h-[44px] min-w-[44px]">View</Button>
                       </Link>
                     </div>
                   );

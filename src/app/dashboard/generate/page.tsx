@@ -80,13 +80,13 @@ export default function GeneratePage() {
   const isFormValid = formData.topic.trim() !== "" && formData.targetAudience.trim() !== "";
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 overflow-x-hidden">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Content Generator</h1>
-        <p className="text-gray-500 mt-2">Create high-quality content for your business in seconds.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Content Generator</h1>
+        <p className="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Create high-quality content for your business in seconds.</p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         {/* Input Form */}
         <Card>
           <CardHeader>
@@ -101,7 +101,7 @@ export default function GeneratePage() {
                   name="contentType"
                   value={formData.contentType}
                   onChange={handleChange}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <option value="instagram">Instagram Post</option>
                   <option value="website">Website Copy</option>
@@ -137,7 +137,7 @@ export default function GeneratePage() {
                   name="tone"
                   value={formData.tone}
                   onChange={handleChange}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <option value="professional">Professional</option>
                   <option value="casual">Casual</option>
@@ -189,7 +189,7 @@ export default function GeneratePage() {
           </CardHeader>
           <CardContent className="flex-1">
             {generatedContent ? (
-              <div className="p-4 bg-gray-50 rounded-lg h-full min-h-[300px] text-sm leading-relaxed overflow-auto">
+              <div className="p-3 sm:p-4 bg-gray-50 rounded-lg h-full min-h-[250px] sm:min-h-[300px] text-sm leading-relaxed overflow-auto overflow-x-hidden break-words">
                 <ReactMarkdown
                   components={{
                     h1: (props) => <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-4" {...props} />,
@@ -208,7 +208,7 @@ export default function GeneratePage() {
                 </ReactMarkdown>
               </div>
             ) : (
-              <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-gray-400 border-2 border-dashed rounded-lg">
+              <div className="h-full min-h-[250px] sm:min-h-[300px] flex flex-col items-center justify-center text-gray-400 border-2 border-dashed rounded-lg">
                 <Loader2 className={`h-8 w-8 mb-4 ${isLoading ? "animate-spin opacity-50" : "opacity-20"}`} />
                 <p>{isLoading ? "AI is thinking..." : "Your content will appear here"}</p>
               </div>

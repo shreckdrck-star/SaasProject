@@ -16,10 +16,10 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-6 sm:space-y-8 max-w-4xl overflow-x-hidden">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-500 mt-2">Manage your account settings and preferences.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Settings</h1>
+        <p className="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">Manage your account settings and preferences.</p>
       </div>
 
       <Card>
@@ -48,12 +48,12 @@ export default async function SettingsPage() {
           <CardDescription>Manage your billing and plan.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="bg-purple-50 p-4 rounded-lg border border-purple-100 flex justify-between items-center">
+          <div className="bg-purple-50 p-4 rounded-lg border border-purple-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
             <div>
               <p className="font-semibold text-purple-900">Free Plan</p>
               <p className="text-sm text-purple-700">{DAILY_GENERATION_LIMIT} generations per day</p>
             </div>
-            <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-100">Upgrade Plan</Button>
+            <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-100 w-full sm:w-auto min-h-[44px]">Upgrade Plan</Button>
           </div>
         </CardContent>
       </Card>

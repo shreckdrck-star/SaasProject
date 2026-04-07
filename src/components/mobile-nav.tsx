@@ -36,7 +36,7 @@ export default function MobileNav() {
         <Link href="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
           ContentAI
         </Link>
-        <button onClick={() => setOpen(true)} className="text-white p-2">
+        <button onClick={() => setOpen(true)} className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
           <Menu className="w-6 h-6" />
         </button>
       </header>
@@ -49,7 +49,7 @@ export default function MobileNav() {
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
                 ContentAI
               </span>
-              <button onClick={() => setOpen(false)} className="text-white p-1">
+              <button onClick={() => setOpen(false)} className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -58,7 +58,7 @@ export default function MobileNav() {
                 <Link
                   key={href}
                   href={href}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
+                  className={`flex items-center space-x-3 px-4 py-3 min-h-[44px] rounded-lg transition ${
                     pathname === href
                       ? "bg-white/15 text-white"
                       : "text-gray-300 hover:bg-white/10 hover:text-white"

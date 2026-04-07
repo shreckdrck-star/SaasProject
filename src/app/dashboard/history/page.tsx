@@ -100,15 +100,15 @@ export default function HistoryPage() {
               <CardContent className="p-0">
                 <button
                   onClick={() => toggleExpand(item.id)}
-                  className="w-full p-6 flex items-center justify-between text-left hover:bg-gray-50 transition rounded-lg"
+                  className="w-full p-4 sm:p-6 flex items-center justify-between text-left hover:bg-gray-50 transition rounded-lg min-h-[44px] gap-3"
                 >
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-purple-100 rounded-lg text-purple-600">
-                      <FileText className="w-6 h-6" />
+                  <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                    <div className="p-2.5 sm:p-3 bg-purple-100 rounded-lg text-purple-600 shrink-0">
+                      <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{item.topic}</h3>
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
+                    <div className="min-w-0">
+                      <h3 className="font-semibold text-gray-900 truncate">{item.topic}</h3>
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mt-1">
                         <span className="bg-gray-100 px-2 py-0.5 rounded text-xs">
                           {CONTENT_TYPE_LABELS[item.content_type] || item.content_type}
                         </span>
@@ -119,8 +119,8 @@ export default function HistoryPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm text-gray-400 max-w-xs hidden md:block truncate">
+                  <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
+                    <span className="text-sm text-gray-400 max-w-xs hidden lg:block truncate">
                       {item.generated_content.slice(0, 80)}...
                     </span>
                     {expandedId === item.id ? (
@@ -131,8 +131,8 @@ export default function HistoryPage() {
                   </div>
                 </button>
                 {expandedId === item.id && (
-                  <div className="px-6 pb-6 border-t border-gray-100">
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 border-t border-gray-100">
+                    <div className="mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg text-sm text-gray-700 whitespace-pre-wrap break-words leading-relaxed overflow-x-hidden">
                       {item.generated_content}
                     </div>
                   </div>

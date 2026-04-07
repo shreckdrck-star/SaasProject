@@ -73,9 +73,9 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden min-w-0">
         <MobileNav />
-        <div className="p-8">
+        <div className="p-4 sm:p-6 md:p-8">
           {children}
         </div>
       </main>
