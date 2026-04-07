@@ -12,8 +12,13 @@ export default async function DashboardPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
-  const user = await currentUser();
-  const firstName = user?.firstName || "there";
+  let firstName = "there";
+  try {
+    const user = await currentUser();
+    firstName = user?.firstName || "there";
+  } catch (e) {
+    console.error("Failed to fetch user:", e);
+  }
 
   let totalCount: number | null = 0;
   let todayCount: number | null = 0;

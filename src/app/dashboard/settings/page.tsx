@@ -5,9 +5,15 @@ import { currentUser } from "@clerk/nextjs/server";
 import { DAILY_GENERATION_LIMIT } from "@/lib/constants";
 
 export default async function SettingsPage() {
-  const user = await currentUser();
-  const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "";
-  const email = user?.emailAddresses?.[0]?.emailAddress || "";
+  let fullName = "";
+  let email = "";
+  try {
+    const user = await currentUser();
+    fullName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "";
+    email = user?.emailAddresses?.[0]?.emailAddress || "";
+  } catch (e) {
+    console.error("Failed to fetch user:", e);
+  }
 
   return (
     <div className="space-y-8 max-w-4xl">
