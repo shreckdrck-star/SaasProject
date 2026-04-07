@@ -101,7 +101,7 @@ export default function GeneratePage() {
                   name="contentType"
                   value={formData.contentType}
                   onChange={handleChange}
-                  className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-base text-gray-900 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <option value="instagram">Instagram Post</option>
                   <option value="website">Website Copy</option>
@@ -137,7 +137,7 @@ export default function GeneratePage() {
                   name="tone"
                   value={formData.tone}
                   onChange={handleChange}
-                  className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex h-11 w-full rounded-md border border-input bg-white px-3 py-2 text-base text-gray-900 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                   <option value="professional">Professional</option>
                   <option value="casual">Casual</option>

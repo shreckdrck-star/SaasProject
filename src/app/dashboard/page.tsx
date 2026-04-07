@@ -68,34 +68,34 @@ export default async function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Daily Usage</CardTitle>
-            <Zap className="h-4 w-4 text-purple-600" />
+            <CardTitle className="text-sm font-medium text-gray-300">Daily Usage</CardTitle>
+            <Zap className="h-4 w-4 text-purple-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{todayCount ?? 0}/{DAILY_GENERATION_LIMIT}</div>
-            <p className="text-xs text-muted-foreground">Generations used today</p>
+            <div className="text-2xl font-bold text-white">{todayCount ?? 0}/{DAILY_GENERATION_LIMIT}</div>
+            <p className="text-xs text-gray-400">Generations used today</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Generated</CardTitle>
-            <FileText className="h-4 w-4 text-pink-600" />
+            <CardTitle className="text-sm font-medium text-gray-300">Total Generated</CardTitle>
+            <FileText className="h-4 w-4 text-pink-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCount ?? 0}</div>
-            <p className="text-xs text-muted-foreground">Lifetime content pieces</p>
+            <div className="text-2xl font-bold text-white">{totalCount ?? 0}</div>
+            <p className="text-xs text-gray-400">Lifetime content pieces</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">History</CardTitle>
-            <History className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm font-medium text-gray-300">History</CardTitle>
+            <History className="h-4 w-4 text-blue-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalCount ?? 0}</div>
-            <p className="text-xs text-muted-foreground">Saved in history</p>
+            <div className="text-2xl font-bold text-white">{totalCount ?? 0}</div>
+            <p className="text-xs text-gray-400">Saved in history</p>
           </CardContent>
         </Card>
       </div>
