@@ -15,7 +15,7 @@ export default function SidebarNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex-1 px-4 space-y-2 mt-4">
+    <nav role="navigation" className="flex-1 px-4 space-y-2 mt-4">
       {navLinks.map(({ href, label, icon: Icon }) => {
         const isActive = href === "/dashboard" ? pathname === href : pathname.startsWith(href);
         return (

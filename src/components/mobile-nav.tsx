@@ -36,7 +36,7 @@ export default function MobileNav() {
         <Link href="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
           ContentAI
         </Link>
-        <button onClick={() => setOpen(true)} className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
+        <button onClick={() => setOpen(true)} aria-label="Open menu" className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
           <Menu className="w-6 h-6" />
         </button>
       </header>
@@ -49,11 +49,11 @@ export default function MobileNav() {
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
                 ContentAI
               </span>
-              <button onClick={() => setOpen(false)} className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-white p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <nav className="flex-1 px-4 space-y-2">
+            <nav role="navigation" className="flex-1 px-4 space-y-2">
               {navLinks.map(({ href, label, icon: Icon }) => (
                 <Link
                   key={href}

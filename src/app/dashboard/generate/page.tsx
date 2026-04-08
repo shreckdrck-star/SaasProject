@@ -96,8 +96,9 @@ export default function GeneratePage() {
           <CardContent>
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Content Type</label>
-                <select 
+                <label htmlFor="contentType" className="text-sm font-medium">Content Type</label>
+                <select
+                  id="contentType"
                   name="contentType"
                   value={formData.contentType}
                   onChange={handleChange}
@@ -110,8 +111,9 @@ export default function GeneratePage() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Topic</label>
-                <Input 
+                <label htmlFor="topic" className="text-sm font-medium">Topic</label>
+                <Input
+                  id="topic"
                   name="topic"
                   value={formData.topic}
                   onChange={handleChange}
@@ -121,8 +123,9 @@ export default function GeneratePage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Target Audience</label>
-                <Input 
+                <label htmlFor="targetAudience" className="text-sm font-medium">Target Audience</label>
+                <Input
+                  id="targetAudience"
                   name="targetAudience"
                   value={formData.targetAudience}
                   onChange={handleChange}
@@ -132,8 +135,9 @@ export default function GeneratePage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Tone</label>
-                <select 
+                <label htmlFor="tone" className="text-sm font-medium">Tone</label>
+                <select
+                  id="tone"
                   name="tone"
                   value={formData.tone}
                   onChange={handleChange}
@@ -147,8 +151,9 @@ export default function GeneratePage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Additional Requirements</label>
-                <Textarea 
+                <label htmlFor="additionalRequirements" className="text-sm font-medium">Additional Requirements</label>
+                <Textarea
+                  id="additionalRequirements"
                   name="additionalRequirements"
                   value={formData.additionalRequirements}
                   onChange={handleChange}
@@ -182,7 +187,7 @@ export default function GeneratePage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Generated Result</CardTitle>
             {generatedContent && (
-              <Button variant="ghost" size="icon" onClick={handleCopy}>
+              <Button variant="ghost" size="icon" onClick={handleCopy} aria-label={copied ? "Copied" : "Copy to clipboard"}>
                 {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
               </Button>
             )}
