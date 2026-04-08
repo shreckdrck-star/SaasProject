@@ -1,12 +1,7 @@
 import Link from "next/link";
-import {
-  LayoutDashboard,
-  PenTool,
-  History,
-  Settings,
-} from "lucide-react";
 import { UserButton, SignedIn } from "@clerk/nextjs";
 import MobileNav from "@/components/mobile-nav";
+import SidebarNav from "@/components/sidebar-nav";
 
 export default function DashboardLayout({
   children,
@@ -23,36 +18,7 @@ export default function DashboardLayout({
           </Link>
         </div>
         
-        <nav className="flex-1 px-4 space-y-2 mt-4">
-          <Link 
-            href="/dashboard" 
-            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/10 transition text-gray-300 hover:text-white"
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            <span>Dashboard</span>
-          </Link>
-          <Link 
-            href="/dashboard/generate" 
-            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/10 transition text-gray-300 hover:text-white"
-          >
-            <PenTool className="w-5 h-5" />
-            <span>Generate</span>
-          </Link>
-          <Link 
-            href="/dashboard/history" 
-            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/10 transition text-gray-300 hover:text-white"
-          >
-            <History className="w-5 h-5" />
-            <span>History</span>
-          </Link>
-          <Link 
-            href="/dashboard/settings" 
-            className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-white/10 transition text-gray-300 hover:text-white"
-          >
-            <Settings className="w-5 h-5" />
-            <span>Settings</span>
-          </Link>
-        </nav>
+        <SidebarNav />
 
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center space-x-3 px-4 py-3 mb-2">

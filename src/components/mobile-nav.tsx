@@ -59,8 +59,8 @@ export default function MobileNav() {
                   key={href}
                   href={href}
                   className={`flex items-center space-x-3 px-4 py-3 min-h-[44px] rounded-lg transition ${
-                    pathname === href
-                      ? "bg-white/15 text-white"
+                    (href === "/dashboard" ? pathname === href : pathname.startsWith(href))
+                      ? "bg-white/15 text-white border-l-2 border-purple-400"
                       : "text-gray-300 hover:bg-white/10 hover:text-white"
                   }`}
                 >
