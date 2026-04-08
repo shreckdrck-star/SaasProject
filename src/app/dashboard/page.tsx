@@ -25,28 +25,30 @@ export default async function DashboardPage() {
   let recent: { id: string; content_type: string; topic: string; created_at: string }[] | null = null;
 
   try {
-    const { count, error: totalError } = await supabase
-      .from("generations")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", userId);
-    if (!totalError) totalCount = count;
-
     const todayUTC = new Date();
     todayUTC.setUTCHours(0, 0, 0, 0);
-    const { count: tCount, error: todayError } = await supabase
-      .from("generations")
-      .select("*", { count: "exact", head: true })
-      .eq("user_id", userId)
-      .gte("created_at", todayUTC.toISOString());
-    if (!todayError) todayCount = tCount;
 
-    const { data, error: recentError } = await supabase
-      .from("generations")
-      .select("id, content_type, topic, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(3);
-    if (!recentError) recent = data;
+    const [totalResult, todayResult, recentResult] = await Promise.all([
+      supabase
+        .from("generations")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId),
+      supabase
+        .from("generations")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId)
+        .gte("created_at", todayUTC.toISOString()),
+      supabase
+        .from("generations")
+        .select("id, content_type, topic, created_at")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(3),
+    ]);
+
+    if (!totalResult.error) totalCount = totalResult.count;
+    if (!todayResult.error) todayCount = todayResult.count;
+    if (!recentResult.error) recent = recentResult.data;
   } catch (err) {
     console.error("Failed to fetch dashboard data:", err);
   }
