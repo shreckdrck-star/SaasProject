@@ -5,3 +5,5 @@ export const CONTENT_TYPE_LABELS: Record<string, string> = {
   website: "Website",
   ad: "Ad Campaign",
 };
+
+export const VALID_TONES = ["professional", "casual", "persuasive", "witty"] as const;

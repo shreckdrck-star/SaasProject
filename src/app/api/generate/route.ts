@@ -1,7 +1,7 @@
 import Groq from "groq-sdk";
 import { auth } from "@clerk/nextjs/server";
 import { supabase } from "@/lib/supabase";
-import { DAILY_GENERATION_LIMIT } from "@/lib/constants";
+import { DAILY_GENERATION_LIMIT, CONTENT_TYPE_LABELS, VALID_TONES } from "@/lib/constants";
 
 export async function POST(req: Request) {
   try {
@@ -10,16 +10,61 @@ export async function POST(req: Request) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const { contentType, topic, targetAudience, tone, additionalRequirements } = await req.json();
+    const body = await req.json();
+    const contentType = typeof body.contentType === "string" ? body.contentType.trim() : "";
+    const topic = typeof body.topic === "string" ? body.topic.trim() : "";
+    const targetAudience = typeof body.targetAudience === "string" ? body.targetAudience.trim() : "";
+    const tone = typeof body.tone === "string" ? body.tone.trim() : "";
+    const additionalRequirements = typeof body.additionalRequirements === "string" ? body.additionalRequirements.trim() : "";
+
+    // Validate contentType
+    if (!Object.keys(CONTENT_TYPE_LABELS).includes(contentType)) {
+      return Response.json(
+        { error: `Invalid content type. Must be one of: ${Object.keys(CONTENT_TYPE_LABELS).join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Validate tone
+    if (!(VALID_TONES as readonly string[]).includes(tone)) {
+      return Response.json(
+        { error: `Invalid tone. Must be one of: ${VALID_TONES.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Validate required fields
+    if (!topic) {
+      return Response.json({ error: "topic is required" }, { status: 400 });
+    }
+    if (!targetAudience) {
+      return Response.json({ error: "targetAudience is required" }, { status: 400 });
+    }
+
+    // Validate string lengths
+    if (topic.length > 200) {
+      return Response.json({ error: "topic must be 200 characters or fewer" }, { status: 400 });
+    }
+    if (targetAudience.length > 200) {
+      return Response.json({ error: "targetAudience must be 200 characters or fewer" }, { status: 400 });
+    }
+    if (additionalRequirements.length > 500) {
+      return Response.json({ error: "additionalRequirements must be 500 characters or fewer" }, { status: 400 });
+    }
 
     // Check daily usage limit (3/day for free tier)
     const todayUTC = new Date();
     todayUTC.setUTCHours(0, 0, 0, 0);
-    const { count } = await supabase
+    const { count, error: countError } = await supabase
       .from("generations")
       .select("*", { count: "exact", head: true })
       .eq("user_id", userId)
       .gte("created_at", todayUTC.toISOString());
+
+    if (countError) {
+      console.error("Failed to check daily usage:", countError);
+      return Response.json({ error: "Failed to check usage limit" }, { status: 500 });
+    }
 
     const used = count ?? 0;
     if (used >= DAILY_GENERATION_LIMIT) {
